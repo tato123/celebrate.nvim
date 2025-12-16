@@ -5,8 +5,9 @@ M.config = vim.deepcopy(config.defaults)
 
 local function get_media_files()
   local files = {}
+  local media_dir = vim.fn.expand(M.config.media_dir)
   for _, ext in ipairs(M.config.extensions) do
-    local pattern = M.config.media_dir .. "/*." .. ext
+    local pattern = media_dir .. "/*." .. ext
     local matches = vim.fn.glob(pattern, false, true)
     for _, f in ipairs(matches) do
       table.insert(files, f)
@@ -57,14 +58,17 @@ function M.celebrate()
   -- Run chafa in terminal buffer
   -- Use symbols format since kitty protocol doesn't pass through neovim's terminal
   local cmd = string.format(
-    "chafa --format=symbols --size=%dx%d --animate=on --duration=%d %s; exit",
+    "chafa --format=symbols --size=%dx%d --animate=on --duration=%d '%s'",
     width - 2,
     height - 2,
     math.floor(M.config.duration_ms / 1000),
-    vim.fn.shellescape(choice)
+    choice
   )
-  vim.fn.termopen(cmd)
-  vim.cmd("startinsert")
+  vim.fn.termopen(cmd, {
+    on_exit = function()
+      -- Auto-close handled by defer_fn
+    end,
+  })
 
   -- Close handler
   local function close()
