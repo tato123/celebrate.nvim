@@ -76,8 +76,9 @@ function M.celebrate()
 
   -- Run chafa in terminal buffer
   -- Use symbols format since kitty protocol doesn't pass through neovim's terminal
+  -- Use --clear to redraw in place (works better in neovim terminal)
   local cmd = string.format(
-    "chafa --format=symbols --size=%dx%d --animate=on --duration=%d '%s'",
+    "chafa --format=symbols --size=%dx%d --clear --animate=on --duration=%d '%s'",
     width - 2,
     height - 2,
     math.floor(M.config.duration_ms / 1000),
