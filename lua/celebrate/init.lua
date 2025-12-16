@@ -3,6 +3,9 @@ local config = require("celebrate.config")
 
 M.config = vim.deepcopy(config.defaults)
 
+-- Track last used URL to avoid repeats
+local last_url = nil
+
 -- Get plugin root directory
 local function get_plugin_root()
   local source = debug.getinfo(1, "S").source:sub(2)
@@ -101,7 +104,22 @@ function M.celebrate()
 
   -- Re-seed for randomness
   math.randomseed(os.time() + (vim.loop.hrtime() % 1000000))
-  local url = urls[math.random(#urls)]
+
+  -- Pick a random URL, avoiding the last one if possible
+  local url
+  if #urls > 1 and last_url then
+    -- Filter out last URL and pick from remaining
+    local available = {}
+    for _, u in ipairs(urls) do
+      if u ~= last_url then
+        table.insert(available, u)
+      end
+    end
+    url = available[math.random(#available)]
+  else
+    url = urls[math.random(#urls)]
+  end
+  last_url = url
 
   -- Get local path (downloads if needed)
   vim.notify("Loading celebration...", vim.log.levels.INFO)
