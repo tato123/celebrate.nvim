@@ -55,8 +55,9 @@ function M.celebrate()
   play_audio(choice)
 
   -- Run chafa in terminal buffer
+  -- Use symbols format since kitty protocol doesn't pass through neovim's terminal
   local cmd = string.format(
-    "chafa --format=kitty --size=%dx%d --animate=on --duration=%d %s; exit",
+    "chafa --format=symbols --size=%dx%d --animate=on --duration=%d %s; exit",
     width - 2,
     height - 2,
     math.floor(M.config.duration_ms / 1000),
