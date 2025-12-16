@@ -5,14 +5,33 @@ M.config = vim.deepcopy(config.defaults)
 
 local function get_media_files()
   local files = {}
-  local media_dir = vim.fn.expand(M.config.media_dir)
-  for _, ext in ipairs(M.config.extensions) do
-    local pattern = media_dir .. "/*." .. ext
-    local matches = vim.fn.glob(pattern, false, true)
-    for _, f in ipairs(matches) do
-      table.insert(files, f)
+  local dirs_to_check = {}
+
+  -- Check local directory first if enabled
+  if M.config.use_local then
+    local local_dir = vim.fn.getcwd() .. "/" .. M.config.local_media_dir
+    if vim.fn.isdirectory(local_dir) == 1 then
+      table.insert(dirs_to_check, local_dir)
     end
   end
+
+  -- Always check global directory
+  local global_dir = vim.fn.expand(M.config.global_media_dir)
+  if vim.fn.isdirectory(global_dir) == 1 then
+    table.insert(dirs_to_check, global_dir)
+  end
+
+  -- Collect files from all directories
+  for _, dir in ipairs(dirs_to_check) do
+    for _, ext in ipairs(M.config.extensions) do
+      local pattern = dir .. "/*." .. ext
+      local matches = vim.fn.glob(pattern, false, true)
+      for _, f in ipairs(matches) do
+        table.insert(files, f)
+      end
+    end
+  end
+
   return files
 end
 

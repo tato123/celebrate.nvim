@@ -6,7 +6,6 @@ Show random celebration GIFs/videos when you finish work!
 
 - Neovim 0.9+
 - [chafa](https://hpjansson.org/chafa/) (`brew install chafa`)
-- Terminal with Kitty graphics protocol (Ghostty, Kitty, WezTerm)
 
 ## Installation
 
@@ -23,7 +22,9 @@ Using lazy.nvim:
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `media_dir` | `~/.config/celebrate.nvim` | Directory containing your celebration media |
+| `global_media_dir` | `$XDG_CONFIG_HOME/celebrate.nvim` or `~/.config/celebrate.nvim` | Global celebration media directory |
+| `local_media_dir` | `celebrate` | Local directory name (relative to cwd) |
+| `use_local` | `true` | Check local directory in addition to global |
 | `duration_ms` | `4000` | How long to show the celebration (ms) |
 | `width_ratio` | `0.5` | Popup width as ratio of screen |
 | `height_ratio` | `0.5` | Popup height as ratio of screen |
@@ -39,12 +40,22 @@ Using lazy.nvim:
 
 ## Adding Celebrations
 
-Add GIFs, MP4s, or images to your `media_dir` (default: `~/.config/celebrate.nvim`).
+The plugin checks two locations for media files:
+
+1. **Local** (project-specific): `./celebrate/` in your current directory
+2. **Global**: `${XDG_CONFIG_HOME:-$HOME/.config}/celebrate.nvim`
 
 ```bash
+# Global celebrations (available everywhere)
 mkdir -p ~/.config/celebrate.nvim
-# Add your favorite celebration GIFs!
+curl -o ~/.config/celebrate.nvim/party.gif "YOUR_GIF_URL"
+
+# Project-specific celebrations
+mkdir -p ./celebrate
+curl -o ./celebrate/ship-it.gif "YOUR_GIF_URL"
 ```
+
+Files from both directories are combined, so you can have global defaults plus project-specific celebrations.
 
 ## License
 
