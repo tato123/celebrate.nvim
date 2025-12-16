@@ -1,9 +1,6 @@
 local M = {}
 local config = require("celebrate.config")
 
--- Seed random number generator
-math.randomseed(os.time())
-
 M.config = vim.deepcopy(config.defaults)
 
 local function get_media_files()
@@ -52,6 +49,8 @@ function M.celebrate()
     return
   end
 
+  -- Re-seed on each call with high-resolution time for true randomness
+  math.randomseed(os.time() + (vim.loop.hrtime() % 1000000))
   local choice = files[math.random(#files)]
 
   -- Calculate dimensions
