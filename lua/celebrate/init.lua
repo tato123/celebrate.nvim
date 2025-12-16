@@ -137,7 +137,7 @@ function M.celebrate()
 
   -- Run chafa in terminal buffer
   local cmd = string.format(
-    "chafa --format=symbols --size=%dx%d --clear --animate=on --duration=%d '%s'",
+    "chafa --format=symbols --size=%dx%d --clear --center --animate=on --duration=%d '%s'",
     width - 2,
     height - 2,
     math.floor(M.config.duration_ms / 1000),
