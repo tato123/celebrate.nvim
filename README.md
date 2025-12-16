@@ -1,61 +1,98 @@
 # celebrate.nvim
 
-Show random celebration GIFs/videos when you finish work!
+Show random celebration GIFs and videos in Neovim when you finish work!
+
+Comes with 100 pre-configured celebration URLs. Fork it to customize with your own favorites.
 
 ## Requirements
 
 - Neovim 0.9+
 - [chafa](https://hpjansson.org/chafa/) (`brew install chafa`)
+- curl (for downloading media)
 
 ## Installation
+
+**Fork this repo first!** Then install your fork:
 
 Using lazy.nvim:
 
 ```lua
 {
-  "tato123/celebrate.nvim",
-  opts = {},  -- defaults work out of the box
+  "YOUR_USERNAME/celebrate.nvim",
+  opts = {},
 }
 ```
+
+## Usage
+
+- `:Celebrate` - Show a random celebration
+- `:CelebratePrecache` - Pre-download all media (optional, faster first-time loads)
+- `<Space>yay` - Default keymap (if leader is space)
+- Press `<Esc>` or `q` to close early
 
 ## Configuration
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `global_media_dir` | `$XDG_CONFIG_HOME/celebrate.nvim` or `~/.config/celebrate.nvim` | Global celebration media directory |
-| `local_media_dir` | `celebrate` | Local directory name (relative to cwd) |
-| `use_local` | `true` | Check local directory in addition to global |
 | `duration_ms` | `4000` | How long to show the celebration (ms) |
 | `width_ratio` | `0.5` | Popup width as ratio of screen |
 | `height_ratio` | `0.5` | Popup height as ratio of screen |
 | `audio` | `true` | Play audio (macOS only via afplay) |
 | `keymap` | `<leader>yay` | Keymap to trigger celebration |
-| `extensions` | `{"gif", "mp4", "webm", "png", "jpg"}` | Supported file types |
 
-## Usage
+## How It Works
 
-- `:Celebrate` - Show random celebration
-- `<Space>yay` - Default keymap (if leader is space)
-- Press `<Esc>` or `q` to close early
+Celebrations are defined in `celebrations.lua` as a list of URLs. When you trigger a celebration:
 
-## Adding Celebrations
+1. A random URL is selected
+2. If not cached, it downloads to `~/.cache/celebrate.nvim/`
+3. The media plays in a floating terminal window using chafa
 
-The plugin checks two locations for media files:
+## Customizing Your Celebrations
 
-1. **Local** (project-specific): `./celebrate/` in your current directory
-2. **Global**: `${XDG_CONFIG_HOME:-$HOME/.config}/celebrate.nvim`
+Since you forked this repo, edit `celebrations.lua` to add your own:
 
-```bash
-# Global celebrations (available everywhere)
-mkdir -p ~/.config/celebrate.nvim
-curl -o ~/.config/celebrate.nvim/party.gif "YOUR_GIF_URL"
+```lua
+return {
+  -- Remote URLs (will be cached locally)
+  "https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif",
+  "https://example.com/my-celebration.mp4",
 
-# Project-specific celebrations
-mkdir -p ./celebrate
-curl -o ./celebrate/ship-it.gif "YOUR_GIF_URL"
+  -- Local files (use file:// or absolute paths)
+  "file:///Users/me/celebrations/custom.gif",
+  "/absolute/path/to/video.mp4",
+  "~/celebrations/another.gif",
+}
 ```
 
-Files from both directories are combined, so you can have global defaults plus project-specific celebrations.
+Then commit and push to your fork:
+
+```bash
+git add celebrations.lua
+git commit -m "Add my celebrations"
+git push
+```
+
+## Why Fork?
+
+- **Lightweight**: No media bundled in the plugin, just URLs
+- **Personal**: Add your own GIFs, memes, team celebrations
+- **Portable**: URLs travel with your dotfiles
+- **Fast**: Media is cached locally after first use
+
+## Audio
+
+MP4 and video files with audio tracks will play sound on macOS (using `afplay`).
+GIFs are silent.
+
+## Cache
+
+Media is cached in `~/.cache/celebrate.nvim/` (or `$XDG_CACHE_HOME/celebrate.nvim/`).
+
+To clear the cache:
+```bash
+rm -rf ~/.cache/celebrate.nvim
+```
 
 ## License
 
