@@ -154,8 +154,9 @@ function M.celebrate()
   play_audio(file_path)
 
   -- Run chafa in terminal buffer
+  -- --center=on centers content both horizontally and vertically within the canvas
   local cmd = string.format(
-    "chafa --format=symbols --size=%dx%d --clear --center=on --animate=on --duration=%d '%s'",
+    "chafa --format=symbols --size=%dx%d --center=on --animate=on --duration=%d '%s'",
     width - 2,
     height - 2,
     math.floor(M.config.duration_ms / 1000),
