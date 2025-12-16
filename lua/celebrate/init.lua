@@ -1,6 +1,9 @@
 local M = {}
 local config = require("celebrate.config")
 
+-- Seed random number generator
+math.randomseed(os.time())
+
 M.config = vim.deepcopy(config.defaults)
 
 local function get_media_files()
