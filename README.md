@@ -15,12 +15,7 @@ Using lazy.nvim:
 ```lua
 {
   "tato123/celebrate.nvim",
-  opts = {
-    media_dir = "~/celebrations",
-    duration_ms = 4000,
-    audio = true,
-    keymap = "<leader>yay",
-  },
+  opts = {},  -- defaults work out of the box
 }
 ```
 
@@ -28,7 +23,7 @@ Using lazy.nvim:
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `media_dir` | `~/celebrations` | Directory containing your celebration media |
+| `media_dir` | `~/.config/celebrate.nvim` | Directory containing your celebration media |
 | `duration_ms` | `4000` | How long to show the celebration (ms) |
 | `width_ratio` | `0.5` | Popup width as ratio of screen |
 | `height_ratio` | `0.5` | Popup height as ratio of screen |
@@ -44,10 +39,10 @@ Using lazy.nvim:
 
 ## Adding Celebrations
 
-Add GIFs, MP4s, or images to your `media_dir` (default: `~/celebrations`).
+Add GIFs, MP4s, or images to your `media_dir` (default: `~/.config/celebrate.nvim`).
 
 ```bash
-mkdir -p ~/celebrations
+mkdir -p ~/.config/celebrate.nvim
 # Add your favorite celebration GIFs!
 ```
 

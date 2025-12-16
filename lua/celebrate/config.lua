@@ -1,7 +1,7 @@
 local M = {}
 
 M.defaults = {
-  media_dir = vim.fn.expand("~/celebrations"),
+  media_dir = vim.fn.expand("~/.config/celebrate.nvim"),
   duration_ms = 4000,
   width_ratio = 0.5,
   height_ratio = 0.5,
