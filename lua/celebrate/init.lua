@@ -153,11 +153,10 @@ function M.celebrate()
   play_audio(file_path)
 
   -- Run chafa in terminal buffer
-  -- -f kitty uses kitty graphics protocol for better quality
   -- --center=on centers content within the canvas
   -- -d inf loops the animation indefinitely
   local cmd = string.format(
-    "chafa -f kitty --size=%dx%d --center=on -d inf '%s'",
+    "chafa --size=%dx%d --center=on -d inf '%s'",
     width - 2,
     height - 2,
     file_path
