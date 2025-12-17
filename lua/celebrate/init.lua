@@ -154,8 +154,9 @@ function M.celebrate()
 
   -- Run chafa in terminal buffer
   -- --center=on centers content both horizontally and vertically within the canvas
+  -- -d inf loops the animation indefinitely
   local cmd = string.format(
-    "chafa --format=symbols --size=%dx%d --center=on --animate=on '%s'",
+    "chafa --format=symbols --size=%dx%d --center=on --animate=on -d inf '%s'",
     width - 2,
     height - 2,
     file_path
