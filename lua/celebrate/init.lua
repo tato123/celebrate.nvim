@@ -122,7 +122,6 @@ function M.celebrate()
   last_url = url
 
   -- Get local path (downloads if needed)
-  vim.notify("Loading celebration...", vim.log.levels.INFO)
   local file_path = get_local_path(url)
 
   if not file_path then
@@ -155,11 +154,11 @@ function M.celebrate()
 
   -- Run chafa in terminal buffer
   -- --center=on centers content both horizontally and vertically within the canvas
+  -- --duration=inf loops the animation indefinitely
   local cmd = string.format(
-    "chafa --format=symbols --size=%dx%d --center=on --animate=on --duration=%d '%s'",
+    "chafa --format=symbols --size=%dx%d --center=on --animate=on --duration=inf '%s'",
     width - 2,
     height - 2,
-    math.floor(M.config.duration_ms / 1000),
     file_path
   )
   vim.fn.termopen(cmd, {
