@@ -176,11 +176,40 @@ function M.celebrate()
     end
   end
 
-  -- Auto-close after duration
-  vim.defer_fn(close, M.config.duration_ms)
+  -- Auto-close after duration (only if enabled)
+  if M.config.auto_close then
+    vim.defer_fn(close, M.config.duration_ms)
+  end
 
-  -- Allow closing with Escape or q
-  vim.keymap.set("t", "<Esc>", close, { buffer = buf, nowait = true })
+  -- Double-Escape to close (like Telescope)
+  local esc_pressed = false
+  local esc_timer = nil
+
+  local function handle_escape()
+    if esc_pressed then
+      -- Second Escape - close the window
+      if esc_timer then
+        esc_timer:stop()
+        esc_timer:close()
+      end
+      close()
+    else
+      -- First Escape - start timer
+      esc_pressed = true
+      esc_timer = vim.loop.new_timer()
+      esc_timer:start(500, 0, vim.schedule_wrap(function()
+        esc_pressed = false
+        if esc_timer then
+          esc_timer:stop()
+          esc_timer:close()
+          esc_timer = nil
+        end
+      end))
+    end
+  end
+
+  -- Allow closing with double-Escape or q
+  vim.keymap.set("t", "<Esc>", handle_escape, { buffer = buf, nowait = true })
   vim.keymap.set("t", "q", close, { buffer = buf, nowait = true })
 end
 
