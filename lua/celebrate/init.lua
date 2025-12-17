@@ -153,10 +153,8 @@ function M.celebrate()
   play_audio(file_path)
 
   -- Run chafa in terminal buffer
-  -- --center=on centers content within the canvas
-  -- -d inf loops the animation indefinitely
   local cmd = string.format(
-    "chafa --size=%dx%d --center=on -d inf '%s'",
+    "chafa --size=%dx%d '%s'",
     width - 2,
     height - 2,
     file_path
